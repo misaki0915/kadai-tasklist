@@ -1,8 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:edit, :destroy]
-  before_action :set_task, only: [:index, :show, :edit, :update, :destroy]
-  before_action :check_user, only: [:index, :show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:index, :show, :update, :edit, :destroy]
 
   def show
   end
@@ -47,16 +45,6 @@ class TasksController < ApplicationController
   def correct_user
     @task = current_user.tasks.find_by(id: params[:id])
     unless @task
-      redirect_to root_url
-    end
-  end
-  
-  def set_task
-    @task = Task.find_by(id: params[:id])
-  end
-  
-  def check_user
-    if @task.blank? or @task.user != current_user
       redirect_to root_url
     end
   end
